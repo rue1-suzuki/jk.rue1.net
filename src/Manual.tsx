@@ -6,7 +6,7 @@ import pa from './janken/pa.png'
 const hands = [gu, choki, pa,]
 
 const Manual = () => {
-  const [handIndex, setHandIndex] = useState<number | null>(null)
+  const [selectedHand, setSelectedHand] = useState<string | null>(null)
 
   const [isOpen, setIsOpen] = useState<boolean>(true)
 
@@ -19,40 +19,34 @@ const Manual = () => {
       </div>
 
       <div className='flex justify-center items-center' style={{ minHeight: '48vh' }}>
-        {isOpen === false && handIndex !== null &&
+        {isOpen === false && selectedHand !== null &&
           <div className='flex justify-center items-center'>
             <span className='text-gray-500' style={{ fontSize: '32vh' }}>
               ？
             </span>
           </div>
         }
-        {isOpen && handIndex !== null &&
+        {isOpen && selectedHand !== null &&
           <div className='flex justify-center items-center'>
             <img
               onClick={() => {
-                setHandIndex(null)
+                setSelectedHand(null)
               }}
-              src={hands[handIndex]}
-              alt={hands[handIndex]}
+              src={selectedHand}
+              alt={selectedHand}
               style={{
-                // width: `${100 / hands.length}%`,
                 aspectRatio: '1/1',
                 objectFit: 'contain',
-                // filter: 'grayscale(100%)',
               }}
             />
           </div>
         }
-        {isOpen && handIndex == null &&
+        {isOpen && selectedHand == null &&
           <div className='flex justify-center items-center'>
-            {hands.map((hand, index) => {
-              // グレースケール
+            {hands.sort(() => Math.random() - 0.5).map((hand) => {
               return (
                 <img
                   key={hand}
-                  onClick={() => {
-                    setHandIndex(index)
-                  }}
                   src={hand}
                   alt={hand}
                   style={{
@@ -69,16 +63,28 @@ const Manual = () => {
       </div>
 
       <div className='flex justify-center items-center' style={{ minHeight: '20vh' }}>
+        {isOpen &&
+          <button
+            className='font-bold rounded w-[16rem] py-4 text-xl bg-gray-500 active:bg-gray-700 hover:bg-gray-700 text-white m-1'
+            type='button'
+            onClick={() => {
+              const randomIndex = Math.floor(Math.random() * hands.length)
+              const randamHand = hands[randomIndex]
+              setSelectedHand(randamHand)
+            }}
+            children={<> ランダム </>}
+          />
+        }
         <button
-          className='font-bold rounded w-[16rem] py-4 text-2xl bg-blue-500 hover:bg-blue-700 text-white'
+          className='font-bold rounded w-[16rem] py-4 text-xl bg-blue-500 active:bg-blue-700 hover:bg-blue-700 text-white m-1'
           type='button'
           onClick={() => {
-            if (handIndex === null)
+            if (selectedHand === null)
               return alert('出す手を選択してください。')
 
             setIsOpen((current) => !current)
           }}
-          children={isOpen ? <> 隠す </> : <> オープン </>}
+          children={isOpen ? <> 伏せる </> : <> オモテにする </>}
         />
       </div>
     </>
