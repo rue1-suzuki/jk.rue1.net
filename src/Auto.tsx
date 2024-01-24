@@ -3,23 +3,24 @@ import { Link } from 'react-router-dom'
 import choki from './janken/choki.png'
 import gu from './janken/gu.png'
 import pa from './janken/pa.png'
-
-const generateArray = (length: number): boolean[] => {
-  const randomValues = new Uint8Array(length)
-
-  window.crypto.getRandomValues(randomValues)
-
-  const results = Array.from(randomValues).map((randomNumber) => {
-    return randomNumber % 2 === 0 ? true : false
-  })
-
-  if (results.filter((result) => result === true).length === 1)
-    return results
-
-  return generateArray(length)
-}
+import sleep from './sleep'
 
 const hands = [gu, pa, choki,]  // 順番固定
+
+const getRandom = async () => {
+  try {
+    const response = await fetch('https://api.rue1.net/randoms/')
+    if (response.ok) {
+      const data: { random: number } = await response.json()
+      return data.random
+    }
+  }
+  catch (error) {
+    console.error(error)
+  }
+
+  return Math.floor(Math.random() * 100)
+}
 
 const Auto = () => {
   const [disabled, setDisabled] = useState<boolean>(false)
@@ -42,18 +43,24 @@ const Auto = () => {
     })
   }, [])
 
-  const onClick = useCallback(() => {
+  const onClick = useCallback(async () => {
     setResults((currents) => Array(currents.length).fill(null))
     setDisabled(true)
 
-    setTimeout(() => {
-      setResults((currents) => {
-        return generateArray(currents.length)
+    await sleep(800)
+
+    const random = await getRandom()
+    setResults((currents) => {
+      const randomIndex = Math.floor(random % currents.length)
+
+      return currents.map((_, index) => {
+        return index === randomIndex
       })
-      setTimeout(() => {
-        setDisabled(false)
-      }, 3200)
-    }, 1200)
+    })
+
+    await sleep(800)
+
+    setDisabled(false)
   }, [])
 
   const gridColsClass = useMemo(() => {
