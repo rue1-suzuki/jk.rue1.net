@@ -49,6 +49,9 @@ const Manual = () => {
                   key={hand}
                   src={hand}
                   alt={hand}
+                  onClick={() => {
+                    setSelectedHand(hand)
+                  }}
                   style={{
                     width: `${100 / hands.length}%`,
                     aspectRatio: '1/1',
@@ -72,7 +75,7 @@ const Manual = () => {
               const randamHand = hands[randomIndex]
               setSelectedHand(randamHand)
             }}
-            children={<> ランダム </>}
+            children={<> ランダム選択 </>}
           />
         }
         <button
