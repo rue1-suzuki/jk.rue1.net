@@ -72,8 +72,7 @@ const Manual = () => {
             type='button'
             onClick={() => {
               const randomIndex = Math.floor(Math.random() * hands.length)
-              const randamHand = hands[randomIndex]
-              setSelectedHand(randamHand)
+              setSelectedHand(hands[randomIndex])
             }}
             children={<> ランダム選択 </>}
           />

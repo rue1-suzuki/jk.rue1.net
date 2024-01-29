@@ -190,7 +190,7 @@ const Auto = () => {
       <div className='mb-3'>
         <div className='text-center text-gray-300'>
           <Link className='text-blue-300 underline' to='manual'>
-            1v1モードを試す
+            1v1モード
           </Link>
         </div>
       </div>
