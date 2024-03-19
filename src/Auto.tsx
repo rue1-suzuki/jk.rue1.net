@@ -33,7 +33,13 @@ const Auto = () => {
     setResults((currents) => Array(currents.length).fill(null))
     setDisabled(true)
     await sleep(800)
-    setResults((currents) => shuffle(currents))
+    setResults((currents) => {
+      const newResults = currents.map((_, index) => {
+        return index === 0 ? true : false
+      })
+
+      return shuffle(newResults)
+    })
     await sleep(800)
     setDisabled(false)
   }, [])
