@@ -1,4 +1,4 @@
-import { shuffle } from 'lodash'
+import { random, times } from 'lodash'
 import { useCallback, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import choki from './janken/choki.png'
@@ -34,11 +34,12 @@ const Auto = () => {
     setDisabled(true)
     await sleep(800)
     setResults((currents) => {
-      const newResults = currents.map((_, index) => {
-        return index === 0 ? true : false
+      const values = currents.map(() => {
+        return times(100, () => random(1, 100)).reduce((a, b) => a + b)
       })
 
-      return shuffle(newResults)
+      const max = Math.max(...values)
+      return values.map((value) => value === max)
     })
     await sleep(800)
     setDisabled(false)
