@@ -4,12 +4,12 @@ import Auto from './Auto'
 import Manual from './Manual'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-  .render(
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<Auto />} />
-        <Route path='manual/' element={<Manual />} />
-      </Routes>
-    </BrowserRouter>
-  )
+const root = document.getElementById('root')
+root && ReactDOM.createRoot(root).render(
+  <BrowserRouter>
+    <Routes>
+      <Route index element={<Auto />} />
+      <Route path='manual/' element={<Manual />} />
+    </Routes>
+  </BrowserRouter>
+)

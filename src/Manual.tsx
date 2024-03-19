@@ -1,3 +1,4 @@
+import { shuffle } from 'lodash'
 import { useState } from 'react'
 import choki from './janken/choki.png'
 import gu from './janken/gu.png'
@@ -43,7 +44,7 @@ const Manual = () => {
         }
         {isOpen && selectedHand == null &&
           <div className='flex justify-center items-center'>
-            {hands.sort(() => Math.random() - 0.5).map((hand) => {
+            {shuffle(hands).map((hand) => {
               return (
                 <img
                   key={hand}
@@ -71,8 +72,7 @@ const Manual = () => {
             className='font-bold rounded w-[16rem] py-4 text-xl bg-gray-500 active:bg-gray-700 hover:bg-gray-700 text-white m-1'
             type='button'
             onClick={() => {
-              const randomIndex = Math.floor(Math.random() * hands.length)
-              setSelectedHand(hands[randomIndex])
+              setSelectedHand(shuffle(hands)[0])
             }}
             children={<> ランダム選択 </>}
           />

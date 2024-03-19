@@ -1,6 +1,6 @@
+import { shuffle } from 'lodash'
 import { useCallback, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import getRandom from './getRandom'
 import choki from './janken/choki.png'
 import gu from './janken/gu.png'
 import pa from './janken/pa.png'
@@ -32,20 +32,9 @@ const Auto = () => {
   const onClick = useCallback(async () => {
     setResults((currents) => Array(currents.length).fill(null))
     setDisabled(true)
-
     await sleep(800)
-
-    const random = await getRandom()
-    setResults((currents) => {
-      const randomIndex = Math.floor(random % currents.length)
-
-      return currents.map((_, index) => {
-        return index === randomIndex
-      })
-    })
-
+    setResults((currents) => shuffle(currents))
     await sleep(800)
-
     setDisabled(false)
   }, [])
 
