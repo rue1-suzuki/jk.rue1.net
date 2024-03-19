@@ -1,4 +1,4 @@
-import { random, times } from 'lodash'
+import { random } from 'lodash'
 import { useCallback, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import choki from './janken/choki.png'
@@ -11,6 +11,9 @@ const hands = [gu, pa, choki,]  // 順番固定
 const Auto = () => {
   const [disabled, setDisabled] = useState<boolean>(false)
 
+  const [currentValues, setCurrentValues] = useState<number[]>(() => {
+    return Array(2).fill(0)
+  })
   const [results, setResults] = useState<(boolean | null)[]>(() => {
     return Array(2).fill(true).map(() => null)
   })
@@ -34,9 +37,9 @@ const Auto = () => {
     setDisabled(true)
     await sleep(800)
     setResults((currents) => {
-      const values = currents.map(() => {
-        return times(100, () => random(1, 100)).reduce((a, b) => a + b)
-      })
+      const values = currents.map(() => random(10000))
+
+      setCurrentValues(values)
 
       const max = Math.max(...values)
       return values.map((value) => value === max)
@@ -109,6 +112,11 @@ const Auto = () => {
                   src={hand}
                   alt={hand}
                 />
+                <div className='text-center font-bold'>
+                  <span className='text-gray-500'>
+                    {currentValues[index]}
+                  </span>
+                </div>
               </div>
             )
 
@@ -170,6 +178,16 @@ const Auto = () => {
           />
         </div>
       }
+
+      <div className='flex justify-center items-center'>
+        {currentValues.map((currentValue, index) => {
+          return (
+            <div className='text-center text-gray-500 text-sm' style={{ width: `${100 / currentValues.length}%` }} key={index}>
+              {currentValue}
+            </div>
+          )
+        })}
+      </div>
 
       {/* プリロードのためhidden */}
       {hands.map((hand) => {
